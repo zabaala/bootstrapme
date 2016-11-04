@@ -170,6 +170,30 @@ class FormBuilder extends IlluminateFormBuilder
     }
 
     /**
+     * Generate bootstrap grouped HTML Form type text.
+     * @see http://getbootstrap.com/css/#forms
+     *
+     * @param $name
+     * @param $label
+     * @param $value
+     * @param array $options
+     * @internal param array $labelAttributes
+     * @internal param array $attributes
+     * @return string
+     */
+    public function number($name, $label = null, $value = null, $options = []){
+
+        $options = $this->appendToOptions('id', $name, $options);
+        $options = $this->appendToOptions('class', 'form-control', $options);
+
+        $html  = $this->openGroup($name, $label);
+        $html .= parent::input('number', $name, $value, $options);
+        $html .= $this->closeGroup();
+
+        return $html;
+    }
+
+    /**
      * Generate bootstrap grouped HTML Form type textarea.
      * @see http://getbootstrap.com/css/#forms
      *
