@@ -1,0 +1,21 @@
+{
+    "name": "zabaala/bootstrapme",
+    "description": "Put your Laravel 5 in action and allow that him use the Bootstrap to make form-groups",
+    "type": "library",
+    "require": {
+        "illuminate/html": "^5.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mauricio Rodrigues",
+            "email": "mauricio.vsr@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Zabaala\\Bootstrapme\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
