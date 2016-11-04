@@ -3,11 +3,10 @@
 namespace Zabaala\Bootstrapme;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Laravel as IlluminateFormBuilder;
+use Illuminate\Html\FormBuilder as IlluminateFormBuilder;
 
-class FormBuilder extends IlluminateFormBuilder {
-
-
+class FormBuilder extends IlluminateFormBuilder
+{
     /**
      * An array containing the currently opened form groups.
      *
@@ -25,6 +24,8 @@ class FormBuilder extends IlluminateFormBuilder {
      */
     public function __construct(HtmlBuilder $html, UrlGenerator $url, $csrfToken)
     {
+        parent::__construct($html, $url, $csrfToken);
+
         $this->url = $url;
         $this->html = $html;
         $this->csrfToken = $csrfToken;
