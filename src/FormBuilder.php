@@ -141,7 +141,7 @@ class FormBuilder extends IlluminateFormBuilder
          */
 
         $infoHtml = '';
-        $label = $name;
+        $label = $value;
 
         if (is_array($value)) {
 
@@ -177,7 +177,7 @@ class FormBuilder extends IlluminateFormBuilder
 
         $value = e($this->formatLabel($name, $label));
 
-        return '<label for="'.$name.'"'.$options.'>'.$label . ' ' . $infoHtml .'</label>';
+        return '<label for="'.$name.'"'.$options.'>'.$value . ': ' . $infoHtml .'</label>';
     }
 
     /**
