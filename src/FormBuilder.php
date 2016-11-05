@@ -120,11 +120,64 @@ class FormBuilder extends IlluminateFormBuilder
             $options = $this->appendToOptions('class', 'has-error', $options);
         }
 
-        // If a label is given, we set it up here. Otherwise, we will just
-        // set it to an empty string.
-        $label = $label ? $this->label($name, $label . ':') : '';
+        $label = $this->label($name, $label);
 
         return '<div'.$this->html->attributes($options).'>'.html_entity_decode($label);
+    }
+
+    /**
+     * Create a form label element.
+     *
+     * @param  string $name
+     * @param  string $value
+     * @param  array $options
+     * @return string
+     * @throws BootstrapmeException
+     */
+    public function label($name, $value = null, $options = array())
+    {
+        /**
+         * @todo // If a label is given, we set it up here. Otherwise, we will just set it to an empty string.
+         */
+
+        $infoHtml = '';
+        $label = $name;
+
+        if (is_array($value)) {
+
+            if(! key_exists('name', $value)) {
+                throw new BootstrapmeException('Key name not found in array $value');
+            }
+
+            $label = $value['name'];
+
+            if (key_exists('info', $value)) {
+                if (! (key_exists('title', $value['info']) && key_exists('description', $value['info'])) ) {
+                    throw new BootstrapmeException('Title and description keys should be passed to key: info');
+                }
+
+                $infoPosition = key_exists('position', $value['info']) ? $value['info']['position'] : 'top';
+                $infoIcoClass = key_exists('class', $value['info']) ? $value['info']['class'] : 'fa fa-info-circle';
+
+                $infoHtml = '<span 
+                                class="popovers" 
+                                data-trigger="hover" 
+                                data-placement="' . $infoPosition . '" 
+                                data-content="' . $value['info']['description'] . '" 
+                                data-original-title="' . $value['info']['title'] . '" 
+                                data-html="true">
+                                <i id="popover-box-helper-icon-plan_setup_tax" class="' . $infoIcoClass . '"></i>
+                             </span>';
+            }
+        }
+        
+        $this->labels[] = $label;
+
+        $options = $this->html->attributes($options);
+
+        $value = e($this->formatLabel($name, $label));
+
+        return '<label for="'.$name.'"'.$options.'>'.$label . ' ' . $infoHtml .'</label>';
     }
 
     /**
