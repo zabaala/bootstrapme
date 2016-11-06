@@ -199,24 +199,21 @@ class FormBuilder extends IlluminateFormBuilder
     }
 
     /**
-     * Generate bootstrap grouped HTML Form type text.
-     * @see http://getbootstrap.com/css/#forms
+     * Make a bootstrap form-group.
      *
+     * @param $type
      * @param $name
-     * @param $label
-     * @param $value
+     * @param null $label
+     * @param null $value
      * @param array $options
-     * @internal param array $labelAttributes
-     * @internal param array $attributes
      * @return string
      */
-    public function text($name, $label = null, $value = null, $options = []){
-
+    protected function maker($type, $name, $label = null, $value = null, $options = []) {
         $options = $this->appendToOptions('id', $name, $options);
         $options = $this->appendToOptions('class', 'form-control', $options);
 
         $html  = $this->openGroup($name, $label);
-        $html .= parent::text($name, $value, $options);
+        $html .= parent::input($type, $name, $value, $options);
         $html .= $this->closeGroup();
 
         return $html;
@@ -230,20 +227,26 @@ class FormBuilder extends IlluminateFormBuilder
      * @param $label
      * @param $value
      * @param array $options
-     * @internal param array $labelAttributes
-     * @internal param array $attributes
      * @return string
      */
-    public function number($name, $label = null, $value = null, $options = []){
+    public function text($name, $label = null, $value = null, $options = [])
+    {
+        return $this->maker('text', $name, $label, $value, $options);
+    }
 
-        $options = $this->appendToOptions('id', $name, $options);
-        $options = $this->appendToOptions('class', 'form-control', $options);
-
-        $html  = $this->openGroup($name, $label);
-        $html .= parent::input('number', $name, $value, $options);
-        $html .= $this->closeGroup();
-
-        return $html;
+    /**
+     * Generate bootstrap grouped HTML Form type text.
+     * @see http://getbootstrap.com/css/#forms
+     *
+     * @param $name
+     * @param $label
+     * @param $value
+     * @param array $options
+     * @return string
+     */
+    public function number($name, $label = null, $value = null, $options = [])
+    {
+        return $this->maker('number', $name, $label, $value, $options);
     }
 
     /**
@@ -254,20 +257,11 @@ class FormBuilder extends IlluminateFormBuilder
      * @param $label
      * @param $value
      * @param array $options
-     * @internal param array $labelAttributes
-     * @internal param array $attributes
      * @return string
      */
-    public function textarea($name, $label = null, $value = null, $options = []){
-
-        $options = $this->appendToOptions('id', $name, $options);
-        $options = $this->appendToOptions('class', 'form-control', $options);
-
-        $html  = $this->openGroup($name, $label);
-        $html .= parent::textarea($name, $value, $options);
-        $html .= $this->closeGroup();
-
-        return $html;
+    public function textarea($name, $label = null, $value = null, $options = [])
+    {
+        return $this->maker('textarea', $name, $label, $value, $options);
     }
 
     /**
@@ -278,24 +272,30 @@ class FormBuilder extends IlluminateFormBuilder
      * @param $label
      * @param $value
      * @param array $options
-     * @internal param array $labelAttributes
-     * @internal param array $attributes
      * @return string
      */
-    public function color($name, $label = null, $value = null, $options = []){
-
-        $options = $this->appendToOptions('id', $name, $options);
-        $options = $this->appendToOptions('class', 'form-control', $options);
-
-        $html  = $this->openGroup($name, $label);
-        $html .= $this->input('color', $name, $value, $options);
-        $html .= $this->closeGroup();
-
-        return $html;
+    public function color($name, $label = null, $value = null, $options = [])
+    {
+        return $this->maker('color', $name, $label, $value, $options);
     }
 
     /**
-     * * Generate bootstrap grouped HTML Form type password.
+     * Generate bootstrap grouped HTML Form type email.
+     * @see http://getbootstrap.com/css/#forms
+     *
+     * @param $name
+     * @param $label
+     * @param $value
+     * @param array $options
+     * @return string
+     */
+    public function email($name, $label = null, $value = null, $options = [])
+    {
+        return $this->maker('email', $name, $label, $value, $options);
+    }
+
+    /**
+     * Generate bootstrap grouped HTML Form type password.
      * @see http://getbootstrap.com/css/#forms
      *
      * @param string $name
@@ -303,23 +303,19 @@ class FormBuilder extends IlluminateFormBuilder
      * @param array $options
      * @return string
      */
-    public function password($name, $label = null, $options = []) {
-        $options = $this->appendToOptions('id', $name, $options);
-        $options = $this->appendToOptions('class', 'form-control', $options);
-
-        $html  = $this->openGroup($name, $label);
-        $html .= parent::password($name, $options);
-        $html .= $this->closeGroup();
-
-        return $html;
+    public function password($name, $label = null, $options = [])
+    {
+        return $this->maker('password', $name, $label, '', $options);
     }
 
     /**
-     * * Generate bootstrap grouped HTML Form type checkbox.
+     * Generate bootstrap grouped HTML Form type checkbox.
      * @see http://getbootstrap.com/css/#forms
      *
      * @param string $name
      * @param null $label
+     * @param int $value
+     * @param null $checked
      * @param array $options
      * @return string
      */
@@ -346,10 +342,8 @@ class FormBuilder extends IlluminateFormBuilder
      * @param array $options
      * @return string
      */
-    public function select($name, $label = null, $list = [], $selected = null, $options = []) {
-
-        $options = $this->appendToOptions('class', 'form-control', $options);
-
+    public function select($name, $label = null, $list = [], $selected = null, $options = [])
+    {
         if($list instanceof \Illuminate\Database\Eloquent\Collection) {
 
             $newList = [];
@@ -362,6 +356,8 @@ class FormBuilder extends IlluminateFormBuilder
         if(key_exists('empty_option', $options) && $options['empty_option']===true) {
             array_unshift($list, 'Selecione...');
         }
+
+        $options = $this->appendToOptions('class', 'form-control', $options);
 
         $html  = $this->openGroup($name, $label);
         $html .= parent::select($name, $list, $selected, $options);
