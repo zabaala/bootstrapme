@@ -102,9 +102,9 @@ class HtmlBuilder extends IlluminateHtmlBuilder{
 
         $html  = '<div class="row">';
 
-        $html .= '<div class="col-lg-8"><h1 class="lead title">' .$title. '</h1></div>';
+        $html .= '<div class="col-lg-6"><h1 class="lead title">' .$title. '</h1></div>';
 
-            $html .= '<div class="col-lg-4 action-buttons text-right">';
+            $html .= '<div class="col-lg-6 action-buttons text-right">';
 
             foreach ($buttons as $button) {
                 $html .= $this->link($button['url'], $button['title'], ['class' => $button['class']]) . ' ';
