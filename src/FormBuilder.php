@@ -344,11 +344,13 @@ class FormBuilder extends IlluminateFormBuilder
      */
     public function select($name, $label = null, $list = [], $selected = null, $options = [])
     {
-        if($list instanceof \Illuminate\Database\Eloquent\Collection) {
+        if($list instanceof \Illuminate\Support\Collection) {
 
             $newList = [];
 
-            foreach($list as $item) { $newList[$item->key] = $item->value; }
+            foreach($list as $key => $value) {
+                $newList[$key] = $value;
+            }
 
             $list = $newList;
         }
