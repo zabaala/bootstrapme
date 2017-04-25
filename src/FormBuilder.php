@@ -356,7 +356,13 @@ class FormBuilder extends IlluminateFormBuilder
         }
 
         if(key_exists('empty_option', $options) && $options['empty_option']===true) {
-            array_unshift($list, 'Selecione...');
+            $nList[''] = 'Selecione...';
+
+            foreach ($list as $i => $v) {
+                $nList[$i] = $v;
+            }
+
+            $list = $nList;
         }
 
         $options = $this->appendToOptions('class', 'form-control', $options);
