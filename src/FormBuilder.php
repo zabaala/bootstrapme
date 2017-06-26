@@ -261,7 +261,14 @@ class FormBuilder extends IlluminateFormBuilder
      */
     public function textarea($name, $label = null, $value = null, $options = [])
     {
-        return $this->maker('textarea', $name, $label, $value, $options);
+        $options = $this->appendToOptions('id', $name, $options);
+        $options = $this->appendToOptions('class', 'form-control', $options);
+
+        $html  = $this->openGroup($name, $label);
+        $html .= parent::textarea($name, $value, $options);
+        $html .= $this->closeGroup();
+
+        return $html;
     }
 
     /**
