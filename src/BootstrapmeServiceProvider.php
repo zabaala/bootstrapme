@@ -48,7 +48,13 @@ class BootstrapmeServiceProvider extends HtmlServiceProvider {
     {
         $this->app->singleton('form', function($app)
         {
-            $form = new FormBuilder($app['html'], $app['url'], $app['session.store']->getToken());
+            if (app()->version() <= 5.3) {
+                $token = $app['session.store']->getToken();
+            } else {
+                $token = $app['session.store']->token();
+            }
+
+            $form = new FormBuilder($app['html'], $app['url'], $token);
 
             return $form->setSessionStore($app['session.store']);
         });
