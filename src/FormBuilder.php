@@ -95,7 +95,7 @@ class FormBuilder extends IlluminateFormBuilder
         $errors = $this->session->get('errors');
 
         // Return the formatted error message, if the form element has any.
-        return $errors->first($this->transformKey($name), '<p class="help-block">:message</p>');
+        return $errors->first($this->transformKey($name), '<p class="invalid-feedback">:message</p>');
     }
 
     /**
@@ -170,7 +170,7 @@ class FormBuilder extends IlluminateFormBuilder
                              </span>';
             }
         }
-        
+
         $this->labels[] = $label;
 
         $options = $this->html->attributes($options);
@@ -194,6 +194,7 @@ class FormBuilder extends IlluminateFormBuilder
         // Get the formatted errors for this form group.
         $errors = $this->getFormattedErrors($name);
 
+
         // Append the errors to the group and close it out.
         return $errors.'</div>';
     }
@@ -211,6 +212,10 @@ class FormBuilder extends IlluminateFormBuilder
     protected function maker($type, $name, $label = null, $value = null, $options = []) {
         $options = $this->appendToOptions('id', $name, $options);
         $options = $this->appendToOptions('class', 'form-control', $options);
+
+        if ($this->hasErrors($name)) {
+            $options = $this->appendToOptions('class', 'form-control state-invalid is-invalid', $options);
+        }
 
         $html  = $this->openGroup($name, $label);
         $html .= parent::input($type, $name, $value, $options);
@@ -380,7 +385,4 @@ class FormBuilder extends IlluminateFormBuilder
 
         return $html;
     }
-
-
-
 } 
